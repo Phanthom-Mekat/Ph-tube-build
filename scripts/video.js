@@ -11,11 +11,33 @@ const loadCategories = () => {
 
 // load video api 
 const loadVideo = () => {
-    fetch('https://openapi.programming-hero.com/api/phero-tube/videos')
+    fetch('https://openapi.programming-hero.com/api/phero-tube/videos?title=')
     .then(res => res.json())
     .then(data => displayVideo(data.videos))
     .catch(err=> console.log(err))
 }
+
+const loadDetails = async (videoId) => {
+    console.log(videoId);
+    const uri = `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`;
+    const res = await fetch(uri);
+    const data = await res.json();
+    displayDetails(data.video);
+  };
+  const displayDetails = (video) => {
+    console.log(video);
+    const detailContainer = document.getElementById("modal-content");
+  
+    detailContainer.innerHTML = `
+     <img src=${video.thumbnail} />
+     <p>${video.description}</p>
+    `;
+  
+    // way-1
+    // document.getElementById("showModalData").click();
+    //way-2
+    document.getElementById("customModal").showModal();
+  };
 
 // {
 //     "category_id": "1001",
@@ -96,7 +118,7 @@ const displayVideo =(videos)=>{
         }
         
     </figure>
-    <div class="px-0 py-2 flex gap-2">
+    <div class="px-2 py-2 flex gap-3">
         <div>
             <img class="h-10 w-10 object-cover rounded-full" src=${item.authors[0].profile_picture} />
         </div>
@@ -107,9 +129,10 @@ const displayVideo =(videos)=>{
 
             ${item.authors[0].verified === true ? ` <img  class="w-5" src="https://img.icons8.com/?size=48&id=98A4yZTt9abw&format=png" />` : ""}
           
-            </div>
-
-            <p></p>
+        </div>
+        <p> <button  onclick="loadDetails('${
+          item.video_id
+        }')" class="btn btn-sm btn-info ">details</button> </p>
         </div>
     </div>
     `;
