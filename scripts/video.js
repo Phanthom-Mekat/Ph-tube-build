@@ -10,8 +10,8 @@ const loadCategories = () => {
 
 
 // load video api 
-const loadVideo = () => {
-    fetch('https://openapi.programming-hero.com/api/phero-tube/videos?title=')
+const loadVideo = (title="") => {
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${title}`)
     .then(res => res.json())
     .then(data => displayVideo(data.videos))
     .catch(err=> console.log(err))
@@ -170,6 +170,8 @@ const displaCategories = (categories) => {
 
     })
 }
-
+document.getElementById('searchInput').addEventListener('keyup',(e)=>{
+    loadVideo(e.target.value)
+})
 loadCategories()
 loadVideo()
